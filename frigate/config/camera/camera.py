@@ -34,6 +34,7 @@ from .mqtt import CameraMqttConfig
 from .notification import NotificationConfig
 from .objects import ObjectConfig
 from .onvif import OnvifConfig
+from .pose import PoseConfig
 from .record import RecordConfig
 from .review import ReviewConfig
 from .snapshots import SnapshotsConfig
@@ -91,6 +92,9 @@ class CameraConfig(FrigateBaseModel):
     motion: MotionConfig = Field(None, title="Motion detection configuration.")
     objects: ObjectConfig = Field(
         default_factory=ObjectConfig, title="Object configuration."
+    )
+    pose: PoseConfig = Field(
+        default_factory=PoseConfig, title="Pose detection configuration."
     )
     record: RecordConfig = Field(
         default_factory=RecordConfig, title="Record configuration."

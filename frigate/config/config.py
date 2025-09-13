@@ -22,6 +22,8 @@ from typing_extensions import Self
 from frigate.const import REGEX_JSON
 from frigate.detectors import DetectorConfig, ModelConfig
 from frigate.detectors.detector_config import BaseDetectorConfig
+from frigate.pose_detectors import PoseDetectorConfig, PoseModelConfig
+from frigate.pose_detectors.detector_config import BasePoseDetectorConfig
 from frigate.plus import PlusApi
 from frigate.util.builtin import (
     deep_merge,
@@ -95,6 +97,7 @@ cameras:
 """
 
 DEFAULT_DETECTORS = {"cpu": {"type": "cpu"}}
+DEFAULT_POSE_DETECTORS = {"cpu": {"type": "cpu"}}
 DEFAULT_DETECT_DIMENSIONS = {"width": 1280, "height": 720}
 
 # stream info handler
@@ -354,6 +357,15 @@ class FrigateConfig(FrigateBaseModel):
     )
     model: ModelConfig = Field(
         default_factory=ModelConfig, title="Detection model configuration."
+    )
+
+    # Pose Detector config
+    pose_detectors: Dict[str, BasePoseDetectorConfig] = Field(
+        default=DEFAULT_POSE_DETECTORS,
+        title="Pose detector hardware configuration.",
+    )
+    pose_model: PoseModelConfig = Field(
+        default_factory=PoseModelConfig, title="Pose detection model configuration."
     )
 
     # GenAI config
