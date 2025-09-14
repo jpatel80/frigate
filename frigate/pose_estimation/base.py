@@ -179,7 +179,7 @@ class PoseDetectorRunner(FrigateProcess):
         values_per_keypoint = 3  # x, y, confidence
         values_per_pose = 1 + 4 + keypoints_per_pose * values_per_keypoint  # confidence + bbox + keypoints
         
-        out_shm = UntrackedSharedMemory(name=f"pose-out-{name}", create=False)
+        out_shm = UntrackedSharedMemory(name=f"pose-out-{name}", create=True)
         out_np = np.ndarray((max_poses, values_per_pose), dtype=np.float32, buffer=out_shm.buf)
         self.outputs[name] = {"shm": out_shm, "np": out_np}
 
@@ -267,7 +267,7 @@ class AsyncPoseDetectorRunner(FrigateProcess):
         values_per_keypoint = 3
         values_per_pose = 1 + 4 + keypoints_per_pose * values_per_keypoint
         
-        out_shm = UntrackedSharedMemory(name=f"pose-out-{name}", create=False)
+        out_shm = UntrackedSharedMemory(name=f"pose-out-{name}", create=True)
         out_np = np.ndarray((max_poses, values_per_pose), dtype=np.float32, buffer=out_shm.buf)
         self.outputs[name] = {"shm": out_shm, "np": out_np}
 
@@ -425,7 +425,7 @@ class RemotePoseDetector:
         self.fps = EventsPerSecond()
         self.detection_queue = detection_queue
         self.stop_event = stop_event
-        self.shm = UntrackedSharedMemory(name=f"pose-{self.name}", create=False)
+        self.shm = UntrackedSharedMemory(name=f"pose-{self.name}", create=True)
         self.np_shm = np.ndarray(
             (1, model_config.height, model_config.width, 3),
             dtype=np.uint8,
@@ -438,7 +438,7 @@ class RemotePoseDetector:
         values_per_keypoint = 3
         values_per_pose = 1 + 4 + keypoints_per_pose * values_per_keypoint
         
-        self.out_shm = UntrackedSharedMemory(name=f"pose-out-{self.name}", create=False)
+        self.out_shm = UntrackedSharedMemory(name=f"pose-out-{self.name}", create=True)
         self.out_np_shm = np.ndarray((max_poses, values_per_pose), dtype=np.float32, buffer=self.out_shm.buf)
         self.detector_subscriber = ObjectDetectorSubscriber(f"pose-{name}")
 
