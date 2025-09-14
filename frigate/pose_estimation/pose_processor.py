@@ -350,7 +350,7 @@ class PoseEventProcessor(threading.Thread):
         self.timeline_queue.put(
             (
                 event.camera,
-                EventTypeEnum.tracked_object,
+                EventTypeEnum.pose,
                 event_state,
                 None,
                 event.to_dict(),
@@ -360,7 +360,7 @@ class PoseEventProcessor(threading.Thread):
         # Publish event update
         self.event_publisher.publish(
             (
-                EventTypeEnum.tracked_object,
+                EventTypeEnum.pose,
                 event_state,
                 event.camera,
                 event.pose_id,
