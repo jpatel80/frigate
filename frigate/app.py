@@ -393,14 +393,14 @@ class FrigateApp:
 
         for name in pose_enabled_cameras:
             try:
-                largest_pose_frame = max(
-                    [
-                        det.model.height * det.model.width * 3
-                        if det.model is not None
-                        else 320
-                        for det in self.config.pose_detectors.values()
-                    ]
-                )
+                # Calculate the largest pose frame size, defaulting to 320 if no detectors
+                pose_frame_sizes = [
+                    det.model.height * det.model.width * 3
+                    if det.model is not None
+                    else 320
+                    for det in self.config.pose_detectors.values()
+                ]
+                largest_pose_frame = max(pose_frame_sizes) if pose_frame_sizes else 320
                 shm_in = UntrackedSharedMemory(
                     name=f"pose-{name}",
                     create=True,

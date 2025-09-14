@@ -292,7 +292,9 @@ class EventProcessor(threading.Thread):
             camera_config = self.config.cameras[camera]
             width = camera_config.detect.width
             height = camera_config.detect.height
-            first_pose_detector = list(self.config.pose_detectors.values())[0]
+            # Get first pose detector or None if no detectors configured
+            pose_detector_values = list(self.config.pose_detectors.values())
+            first_pose_detector = pose_detector_values[0] if pose_detector_values else None
 
             start_time = event_data["start_time"]
             end_time = (
@@ -349,9 +351,9 @@ class EventProcessor(threading.Thread):
                 Event.thumbnail: event_data.get("thumbnail"),
                 Event.has_clip: event_data["has_clip"],
                 Event.has_snapshot: event_data["has_snapshot"],
-                Event.model_hash: first_pose_detector.model.model_hash,
-                Event.model_type: first_pose_detector.model.model_type,
-                Event.detector_type: first_pose_detector.type,
+                Event.model_hash: first_pose_detector.model.model_hash if first_pose_detector else None,
+                Event.model_type: first_pose_detector.model.model_type if first_pose_detector else None,
+                Event.detector_type: first_pose_detector.type if first_pose_detector else None,
                 Event.data: {
                     "box": box,
                     "region": region,
